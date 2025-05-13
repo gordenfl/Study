@@ -1,0 +1,6 @@
+*.pyc
+*.mov
+.DS_Store
+.vscode
+venv
+minikube-darwin-arm64

@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "GoEngine/proto;proto";
+
+// 用户位置更新消息
+message UserMove {
+    string uid = 1;   // 用户ID
+    int32 x = 2;      // X坐标
+    int32 y = 3;      // Y坐标
+}
+
+// 用户登录消息
+message UserLogin {
+    string uid = 1;   // 用户ID
+    string username = 2; // 用户名
+    string password = 3; // 密码
+}
+
+// 通用返回消息
+message Response {
+    bool success = 1;  // 是否成功
+    string message = 2; // 返回信息
+}

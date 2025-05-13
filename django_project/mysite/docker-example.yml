@@ -1,0 +1,17 @@
+version: "3.0"
+service:
+    web:
+        images: test_img:latest
+        build: .
+        ports:
+            - "8001:8000" 
+            - "8002:9000" 
+        volumes:
+            - ~/data:/app/upload
+            - ~/logs:/app/logs
+    db:
+        image: my_mysql:latest
+       
+    
+
+
