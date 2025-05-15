@@ -10,7 +10,7 @@ Go / Rust / C#  熟练掌握至少一门语言的语法、标准库、并发模�
 单元测试框架 / Mock 工具
 ## 🧠 二、计算机基础
 ### 数据结构与算法
-实战：倒排索引、Top-K、布隆过滤器等
+实战：倒排索引、Top-K、布隆过滤器等, Skip-List
 ### 操作系统
 内存管理、网络IO模型（epoll/kqueue）
 系统调用、上下文切换、调度算法
@@ -24,7 +24,7 @@ TCP 四次挥手、Nagle、拥塞控制
 gRPC、WebSocket、GraphQL
 跨语言通信（如 Protobuf）
 ### 数据库
-非关系型：Redis / MongoDB / Cassandra
+非关系型： MongoDB / Cassandra
 数据库设计范式、分库分表、中间件（Sharding-JDBC、TiDB）
 ### 缓存系统
 Redis 高级用法：ZSet、Bitmap、HyperLogLog、Lua 脚本、Pipeline
@@ -61,15 +61,13 @@ CAP 定理、Paxos / Raft / Gossip 协议
 Prometheus + Grafana、OpenTelemetry、Jaeger（链路追踪）
 Metrics（QPS、RT、GC、内存占用）
 ### 运维自动化
-Compose、Kubernetes（K8s）
-CI/CD：GitHub Actions、ArgoCD
+Compose、ArgoCD
 ## 📦 六、部署与工程实践
 ### 版本控制
 Git 流程（GitFlow、 trunk-based）
 多分支开发、Tag/Release 管理
 ### 容器化与部署
-镜像构建、配置管理、环境隔离
-DevOps 流程与自动化测试/部署
+镜像构建、配置管理, DevOps 流程与自动化测试/部署
 ### 可观测性设计
 健康检查、熔断机制、慢请求跟踪、报警规则
 ## 🧩 七、业务建模与设计模式
