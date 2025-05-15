@@ -38,20 +38,33 @@
 
 ## K8S 组成部分
 
-    1. K8S 要求最少有一个Master 节点和一个Node 节点才能够正常运行. Master节点可以与Node 节点在同一台物理机
-    2. K8S Master 组件
-        etcd :
-        kube-controller-manager : 所有K8S任务处理的接口都在这里
-        cloud-controller-manager:
-        kube-scheduler: 
-    3. K8S Node 组件
-        kubelet
-        kube-proxy
-        container runtime
-    4. K8S 附加组件
-        ...
-    5. kubectl 命令行,控制台
-    6. K8S可视化界面
+1. K8S 要求最少有一个Master 节点和一个Node 节点才能够正常运行. Master节点可以与Node 节点在同一台物理机
+2. K8S Master 组成
+    * etcd : K8S 的对象存储的分布式数据库, 他存储了如下:
+        * 集群状态: 节点,pod, service volume等资源的当前状态, 
+        * 资源配置: deployment, configMap, secret等定义和配置
+        * 调度信息: Pod的调度, ReplicaSet的副本数量
+        * 认证与授权的信息: 包括RBAC规则, service account 等信息
+        * 网络配置信息: service 的 clusterIP, Endpoints 等等
+        
+        数据是以键值对存在B+树中, 没变化一次就会以diff生成一个新的修订版本, 他是一个Go语言编写的,提供gRPC 和HTTP/JSON 等多种接口, 作为整个K8S运行的数据基础.
+    * api-server: 通过REST向外部提供K8S的服务接口
+    * kube-controller-manager : 所有K8S任务处理的接口都在这里,管理各种类型的控制器,如下:
+        * Node Controller : 负责在节点出现故障的时候进行通知和响应
+        * Job Controller : 检测代表一次性任务的Job 对象,创建Pods 来运行这些任务,一直到完成为止
+        * EndPointSlice Controller : 端点分片控制器,填充端点分片对象,以提供Service 和 Pod之间的连接
+        * ServiceAccount Controller : 服务账号控制器, 为新的命名空间创建默认的服务账号
+    * cloud-controller-manager: 云控制器管理器, 也就是第三方云平台提供的控制器, 对接别的平台的API
+    * kube-scheduler: 这是调度器,他负责将Pod基于一定的算法,将其调用到更合适的节点(服务器)上
+3. K8S Node 组件
+    * kubelet : 负责pod的生命周期和存储, 网络等
+    * kube-proxy : 负责集群内部服务的通信和复杂均衡的功能
+        * 服务发现和负载均衡, 它监听API 
+    * container runtime: 
+4. K8S 附加组件
+    ...
+5. kubectl 命令行,控制台
+6. K8S可视化界面
 
 ### 控制面板组件
 
