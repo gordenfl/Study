@@ -109,4 +109,113 @@ My practice of CI/CD.
 
         After that docker and github repository has been bind together. Anytime while you commit code, the Docker image will be generated.
 
-4. All explanation of 1 2 3 are all the CI (Continuous Integration) part of CI/CD. next step we need expliain what is CD (Continuous Delivery).
+## CD
+
+    Let's CD right now!!
+
+1. All explanation of 1 2 3 are all the CI (Continuous Integration) part of CI/CD. next step we need explain what is CD (Continuous Delivery).
+
+    * What's the Delivery, that means we need to send our docker images to user, let them use all the new function or bug fixing.
+
+2. How to deploy the Docker image into K8S.
+    * You should install MiniKube in you platform. if don't know how to, please check the Document of K8S/INSTALL.md
+    * Assume you have start the minikube. And It can be visited on the public network. then we can let GitHub Actions to deploy the docker image to your K8S server. After that, the CD is finished.
+
+    ```yaml
+    deploy:
+    needs: build #make a dependence of build. Deploy can be start only after build finished
+    runs-on: ubuntu-latest #base on ubuntu
+    steps:
+      - name: Checkout code # check code
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl #install kubectl with the version of 1.27.0
+        uses: azure/setup-kubectl@v3 # the v3 means to this action's version
+        with:
+          version: 'v1.27.0'
+      
+      - name: Set up Kube config
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" > kubeconfig.yaml
+          export KUBECONFIG=kubeconfig.yaml
+      
+      - name: Deploy to Kubernetes
+        uses: appleboy/kubernetes-action@v0.0.1 # this action can help us to distribute the Docker image to k8s
+        with:
+          server: ${{ secrets.K8S_SERVER }} # K8S's Master server IP
+          ca_cert: ${{ secrets.K8S_CA_CERT }} # K8S's CA, you can get with next step, I will told you how to.
+          token: ${{ secrets.K8S_TOKEN }} # K8S's User Token, I will told you how to .
+          namespace: default
+          deployment: my-app
+          container: my-app
+          image: ${{ secrets.DOCKER_USERNAME }}/my-app:${{ github.sha }} # Docer User name. github.sha is the latest version's hash value.
+    ```
+
+3. In the previous section, there are some value defined:
+
+    * server：Kubernetes Cluster's Master server IP, that means  APIs Module。
+    * ca_cert：Kubernetes will be assign a certification from some organization, you need get the cert's Conent with:
+
+        ```shell
+            kubectl config view --minify -o jsonpath='{.clusters[0].cluster.certificate-authority}'
+            cat ~/.minikube/ca.crt | base64 -w 0
+        ```
+
+    * token：it's used for authentication with K8S's service account token
+        before that you need create an user account at first.
+
+        ```shell
+        kubectl create serviceaccount gordenfl          
+        ```
+
+        then create the token for this user
+
+        ```shell
+        kubectl apply -f - <<EOF              
+            apiVersion: v1
+            kind: Secret
+            metadata:
+            name: gordenfl-token
+            annotations:
+                kubernetes.io/service-account.name: gordenfl
+            type : kubernetes.io/service-account-token
+        EOF
+        ```
+
+        after that, you can get the token with this command:
+
+        ```shell
+            kubectl get secret gordenfl-token -o jsonpath='{.data.token}'
+        ```
+
+        if you want to use it, you must base64 decode:
+
+        ```shell
+            kubectl get secret gordenfl-token -o jsonpath='{.data.token}'  # this is show the token 
+            kubectl get secret gordenfl-token -o jsonpath='{.data.token}' | base64 --decode  # this is decode from base64
+        ```
+
+    * namespace：make sure the namespace for this program。
+
+    * deployment：name of the deployment。
+
+    * container：name of container。
+
+    * image： name and label for the image。
+
+4. ✅ Overview of the workflow of GitHub Actions
+
+    * Trigger condition: When you push code to a specified branch (such as main) of a GitHub repository, GitHub Actions will be triggered.
+
+    * Build a Docker image: In the Actions workflow, the Dockerfile is used to build the project's Docker image first.
+
+    * Push the image to Docker Hub: After the build is complete, the image will be pushed to Docker Hub or other container image repositories.
+
+    * Deploy to a Kubernetes cluster: Next, use the Kubernetes configuration file (such as the Deployment YAML file) to deploy the newly built image to the specified Kubernetes cluster.
+    
+    All of these operations are performed in the GitHub Actions runtime environment, usually on a cloud server provided by GitHub.
+
+5. 🌐 Network access requirements
+    It is important to note that the running environment of GitHub Actions requires access to the API server of your Kubernetes cluster. If your cluster is located in a private network, you may need to take additional measures, such as using a VPN, jump server, or secure tunnel to ensure that GitHub Actions can access the cluster securely.
+
