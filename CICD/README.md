@@ -12,12 +12,14 @@ My practice of CI/CD.
     This document we just using GitHub Actions to deal with that. I will give you a full process of public the project of Python Django.
     After that, we will deploy the image we generated to K8S. Running on the K8S normally, then we can visit our program outside as a user. 
 
-## CI/CD
-
     * start an github repos at the Github pages, we call it my-cicd
     * Click Action tab in the main page of the repos in Github, we can choose Django to
     * .github/workflow/django.yaml will be appeal in our project
     * read the content of this file, we can see that all the struct has been finished.
+
+## CI
+
+    let's CI!
 
 1. Content of That Yaml
     basic it will have four parts of that file:
@@ -218,4 +220,3 @@ My practice of CI/CD.
 
 5. 🌐 Network access requirements
     It is important to note that the running environment of GitHub Actions requires access to the API server of your Kubernetes cluster. If your cluster is located in a private network, you may need to take additional measures, such as using a VPN, jump server, or secure tunnel to ensure that GitHub Actions can access the cluster securely.
-
