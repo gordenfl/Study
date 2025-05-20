@@ -16,13 +16,12 @@ Go / Rust / C#  熟练掌握至少一门语言的语法、标准库、并发模�
 系统调用、上下文切换、调度算法
 零拷贝、缓存一致性、Page Cache
 ### 计算机网络
-QUIC / WebSocket
+QUIC 
 TCP 四次挥手、Nagle、拥塞控制
 负载均衡、Keep-Alive、长连接
 ## 🏗️ 三、后端核心知识
 ### 网络通信
-gRPC、WebSocket、GraphQL
-跨语言通信（如 Protobuf）
+gRPC、GraphQL
 ### 数据库
 非关系型： MongoDB / Cassandra
 数据库设计范式、分库分表、中间件（Sharding-JDBC、TiDB）
