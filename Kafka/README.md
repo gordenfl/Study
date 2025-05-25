@@ -6,6 +6,8 @@ Kafka is a data transfer platform for different platform. It manager different p
 
 It can bring low dependency for different platforms. and It can transfer data for two different system efficiency and safety. and It always make a chain of event for the whole system. from StepA => StepB => StepC =>.... all the data will be transferred by Kafka, it connected all the different node of the logic let all the logic async and un-dependency
 
+Kafka will store all the data it transferred. That's means it's not like other message queue that the data will missing while the message passed. You can search data you transferred from Kafka database.
+
 ## Topic
 
 Topic is a group partitions. That means we can use topic to divide messages with type, and we can send event to one topic, this topic will choose different Partition to send request. Topic is an logic concept. It only appear in the code logic.
