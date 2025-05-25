@@ -113,6 +113,22 @@ Consumer always fetch the data from topic, because all the data with the same to
 Zookeeper is a manager for all different Broker in a Kafka system. It is maintaining a registry of all the active brokers in the cluster.
 Zookeeper is also has a leader broker
 
+Zookeeper is tool only manage Kafka cluster. It's a strong tool to manage all kinds of distribute system.
+
+1. Distribute system config management: distribute system such like HDFS, HBase.
+2. Service discovery: Zookeeper maintenance service registry. while server start and register to Zookeeper, other service will discover it and use it
+3. Distribute lock: Maintenance share resource for multi client. such as: database, cache etc.
+4. Leader Election: node chosen for distribute system. such as Kafka Broker, Hadoop NameNode
+5. Name Service: Provide name service such like DNS for distribute system. Let difference server visit each other using name
+6. Queue: provide distribute Queue, Task management
+7. Status Management: management the status of each node such like: online, offline, suspended etc.
+
+    * Hadoop/HDFS
+    * HBase
+    * Storm
+    * SolrCloud
+    * ElasticSearch
+
 # 把我理解的先写出来
 
 1. Partition分为主从, 每个Partition之间的数据都会保持同步
