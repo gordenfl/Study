@@ -1,6 +1,6 @@
 # Redis Stream
 
-What is Redis stream? 
+What is Redis stream?
 From Redis 5.0, Redis Stream is a important feature of Redis. Redis Stream can deal with Log, MessageQueue, Time series these case.
 
 It is essentially an appendable log structure. Every record has an identical ID and key-value pair.
