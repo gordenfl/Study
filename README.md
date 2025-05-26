@@ -9,8 +9,6 @@ Go / Rust / C#  熟练掌握至少一门语言的语法、标准库、并发模�
 静态分析 / Lint 工具
 单元测试框架 / Mock 工具
 ## 🧠 二、计算机基础
-### 数据结构与算法
-实战：倒排索引、Top-K、布隆过滤器等, Skip-List
 ### 操作系统
 内存管理、网络IO模型（epoll/kqueue）
 系统调用、上下文切换、调度算法
@@ -26,7 +24,7 @@ gRPC、GraphQL
 非关系型： MongoDB / Cassandra
 数据库设计范式、分库分表、中间件（Sharding-JDBC、TiDB）
 ### 缓存系统
-Redis 高级用法：ZSet、Bitmap、HyperLogLog、Lua 脚本、Pipeline
+Redis 高级用法：Bitmap、HyperLogLog、Lua 脚本、Pipeline
 缓存一致性：Cache Aside / Write Through / Write Back
 缓存击穿、雪崩、穿透
 ### 消息队列
@@ -48,7 +46,7 @@ CAS
 ### 分布式系统基础
 CAP 定理、Paxos / Raft / Gossip 协议
 分布式事务（2PC、SAGA、TCC）
-一致性哈希、Zookeeper / Etcd、服务注册与发现
+一致性哈希 / Etcd、服务注册与发现
 ### 分布式架构实践
 服务拆分、网关（API Gateway）、Sidecar 模式（如 Istio）
 负载均衡器：Nginx / Envoy / HAProxy
