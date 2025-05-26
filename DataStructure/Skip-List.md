@@ -1,11 +1,11 @@
 # Skip-List
 
 What is Skip-List?
-It's a advanced data struct.
+It's a advanced data struct. Based on the Linked List, each node have a forward array, each of the element in forward array is a node for each level. you should define the MAX_LEVEL before you make the Skip-List. 
 
-Based on Linked List: 
+Based on Linked List:
 
-```
+```txt
 |---------------------------------------------------------------------->|
 |-------------------------------------------------------------->|------>|
 |------------------------------>|------------------------------>|------>|
