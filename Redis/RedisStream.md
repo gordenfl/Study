@@ -40,3 +40,76 @@ Application Scenarios of Redis Stream
 * Message Queue (replace RabbitMQ, Kafka)
 * Data storage with time order
 * Deal with realtime data (Monitoring and alarm)
+
+
+Redis Stream base Structure:
+
+```mathematica
+ Redis Stream: mystream
+ ┌─────────────────────────────────────────────────────────────────────┐
+ │                     Radix Tree  Prefix Tree                         │
+ │ ┌────────────────────────────────────────────────────────────────┐  │
+ │ │ Key: 1685065263341-0                                           │  │
+ │ │ Value: Listpack -> [ "sensor_id":"123", "temperature":"36.7" ] │  │
+ │ └────────────────────────────────────────────────────────────────┘  │
+ │ ┌────────────────────────────────────────────────────────────────┐  │
+ │ │ Key: 1685065263342-0                                           │  │
+ │ │ Value: Listpack -> [ "sensor_id":"124", "temperature":"36.8" ] │  │
+ │ └────────────────────────────────────────────────────────────────┘  │
+ │ ...                                                                 │
+ └─────────────────────────────────────────────────────────────────────┘
+
+ ┌─────────────────────────────┐
+ │  Consumer Group: mygroup    │
+ │  ┌───────────────────────┐  │
+ │  │ last_delivered_id:    │  │
+ │  │ 1685065263341-0       │  │
+ │  └───────────────────────┘  │
+ │  ┌───────────────────────┐  │
+ │  │ pending_entries: {...}│  │
+ │  └───────────────────────┘  │
+ └─────────────────────────────┘
+```
+
+Simplify Implement of Redis Stream:
+
+```py
+class StreamEntry:
+    def __init__(self, entry_id, fields):
+        self.entry_id = entry_id  # 唯一ID
+        self.fields = fields      # 字段和值（字典）
+
+class RadixTreeNode:
+    def __init__(self):
+        self.children = {}
+        self.entries = {}
+
+class RedisStream:
+    def __init__(self):
+        self.radix_tree = RadixTreeNode()
+        self.last_sequence = 0
+
+    def generate_id(self):
+        from time import time
+        ms_time = int(time() * 1000)
+        self.last_sequence += 1
+        return f"{ms_time}-{self.last_sequence}"
+
+    def xadd(self, fields):
+        entry_id = self.generate_id()
+        entry = StreamEntry(entry_id, fields)
+        # 简化为字典存储（实际 Redis 用 Radix Tree + Listpack）
+        self.radix_tree.entries[entry_id] = entry
+        return entry_id
+
+    def xrange(self, start='-', end='+'):
+        entries = sorted(self.radix_tree.entries.items())
+        for entry_id, entry in entries:
+            print(f"{entry_id}: {entry.fields}")
+
+# 示例
+stream = RedisStream()
+stream.xadd({"sensor_id": "123", "temperature": "36.7"})
+stream.xadd({"sensor_id": "124", "temperature": "36.8"})
+stream.xrange()
+```
