@@ -167,31 +167,79 @@ appendfsync everysec # 每秒写盘一次
     HMSET key field1 value1 field2 value2 ...：设置多个字段的值。
     ```
 
-5. ZSet类型: (有序集合/Sorted Set), 这个set中的元素也是唯一的, 但是每一个元素带有一个分数,这个类型会自动按照分数来排序
+5. ZSet类型: (有序集合/Sorted Set), 这个set中的元素也是唯一的, 但是每一个元素带有一个分数,这个类型会自动按照分数来排序 他的实现看[这里](./ZSet.md)
     添加数据:
-    ```
+
+    ```bash
     ZADD leaderboard 100 user1 200 user2
     ```
+
+    ```txt
     | Member | Score |
     | ------ | ----- |
     | user1  | 100   |
     | user2  | 200   |
+    ```
 
     正序排列:
-    ```
+
+    ```bash
     ZRANGE leaderboard 0 -1 WITHSCORES
     ```
+
+    ```txt
     | Member | Score |
     | ------ | ----- |
     | user1  | 100   |
     | user2  | 200   |
-
+    ```
 
     倒序排列:
-    ```
+
+    ```bash
     ZREVRANGE leaderboard 0 -1 WITHSCORES
     ```
+
     | 排名 | 用户    | 分数  |
     | -- | ----- | --- |
     | 1  | user2 | 200 |
     | 2  | user1 | 100 |
+
+6. BitMap类型: 他是通过bit的方式来存储和处理数据,非常适合表示大量二进制状态,比如:是/否, 开/关, 存在/不存在等等
+    * 添加Bitmap (SETBIT)
+
+    ```redis
+    SETBIT key offset 1
+    ```
+
+    key:代表的是bitMap的键
+    offset:表示第几位 (可以理解为用户ID或者索引)
+    1: 设置为1, 表示存在,或者有效
+
+    ```bash
+    SETBIT user:active 12323 1
+    ```
+
+    代表ID 为 12323 的user:active 为 1
+
+    * 修改Bitmap (SETBIT)
+    和添加一样,只要key值是一样的就能够修改
+
+    ```bash
+    SETBIT user:active 12323 0
+    ```
+
+    这样就可以将原来设置12323 user:active 的 1 该成 0
+
+    * 删除Bitmap (DEL)
+    因为Bitmap只是表示一种状态,有或者无, 那么你要删除有两种意图,就是设置成无,直接用SETBIT 设置成0 就可以了,另外一个,你连整个key都不想要,就用这种方法:
+
+    ```bash
+        DEL key
+    ```
+
+    * BitCount 统计1的数量
+
+    ```bash
+    BITCOUNT key
+    ```
