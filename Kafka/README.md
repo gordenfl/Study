@@ -15,6 +15,13 @@ Topic is a group partitions. That means we can use topic to divide messages with
 ## Partition
 
 One topic will have different partition. And each partition only can response for one Topic. And multi Partition can provide the one topic.
+Partition can record all the data transferred from it. All the data through partition can be stored on the disk. All the data from partition will be stored and user can get the older data from Kafka.
+
+For multi thread application, maybe there will be some data read multi times if you using the kafka not collect:
+
+1. if all thread share one Kafka Consumer, multi-thread application will not read data replica
+2. if all the thread have it's Consumer, and All the Consumer are all in one Consumer Group, the data will not be read replica.
+3. if all threads have it's Consumer, and all consumer does not belongs to one Consumer Group, the data may read multi-times.
 
 ## Producer
 
@@ -137,3 +144,8 @@ Zookeeper is tool only manage Kafka cluster. It's a strong tool to manage all ki
     * 配置文件中acks=all, 这样可以实现第二点所说的情况
     * 配置文件中min.insync.replica 这个配置确保在写入数据时候,至少有min.insync.replica 个副本同步完成之才能返回确认,否则就会是写入失败, 从而避免读不到一致的数据.
 4. 一个Partition只能负责一个topic的传输, 并且在集群环境中必须只能有一个Partition是Leader.
+5. 一个Partition负责的数据可不可能被多次读取:
+    * 如果出现多线程应用,这个多线程同时使用共有的一个Consumer对象,这不会导致多次读取,因为Consumer 读取的过程有线程锁
+    * 如果多线程应用中,每个线程有一个Consumer对象,但是这些Consumer对象包含在同一个Consumer Group中, 同样不会出现多次读取
+    * 如果多线程应用中,每个线程有一个Consumer对象,但是没有放入同一个Consumer Group, 这样会产生多次读取.
+
