@@ -243,3 +243,52 @@ appendfsync everysec # 每秒写盘一次
     ```bash
     BITCOUNT key
     ```
+
+7. HyperLogLog : 快速的, 低内存的计算集合中不重复的数量(近似去重计算, 或者求基数)
+    * 适合对大规模数据去重计算
+    * 近似算法, 他的结果不完全准确,但是很接近
+    * 适用于大数据场景, 是和在需要统计 UV (独立访客), 唯一商品数, IP数量等场景
+
+    命令(都是以PF开头的命令):
+
+    * PFADD key element [element ...]  这个命令是向HyperLogLog中添加元素
+        ```bash
+        PFADD visitor user1 
+        (integer) 1
+        ```
+
+        这代表向visitor中增加了一个user1, 你还可以增加其他的
+
+        ```bash
+        PFADD visitor user2 user3 user4 ...
+        (integer) 1
+        ```
+
+        这里要说明的是 返回值: (integer) 1/0 代表的是基数有没有发生变化,就是去重后的数量有没有发生变化.如果变大了就返回1, 否则就返回0
+
+    * PFCOUNT key [key ...] 统计这个key中不重复的元素个数
+
+        ```bash
+        PFCOUNT visitor
+        (integer) 5
+        ```
+
+        这里就可以看到visitor 中已经增加了5个元素,他可以统计出来.
+
+    * PFMERGE destkey sourcekey [sourcekey ...]  将sourcekey中的元素合并到 destkey 中
+
+       ```bash
+       PFADD visitor_day1 user1 user2 user3
+       (integer) 1
+
+       PFADD visitor_day2 user3 user4 user5
+       (integer) 1
+        
+        PFMERGE visitor_total visitor_day1 visitor_day2
+        OK
+
+        PFCOUNT visitor_total
+        (integer) 5
+        ```
+
+        这里很容易理解,就是visitor_day1 和visitor_day2 的数据合并到visitor_total,他的数量就是5 因为user3出现了两次,被合并掉了.

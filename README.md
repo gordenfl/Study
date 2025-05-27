@@ -24,11 +24,11 @@ gRPC、GraphQL
 非关系型： MongoDB / Cassandra
 数据库设计范式、分库分表、中间件（Sharding-JDBC、TiDB）
 ### 缓存系统
-Redis 高级用法：Bitmap、HyperLogLog、Lua 脚本、Pipeline
+Redis 高级用法：Lua 脚本、Pipeline
 缓存一致性：Cache Aside / Write Through / Write Back
 缓存击穿、雪崩、穿透
 ### 消息队列
-RabbitMQ / NATS / Redis Stream
+RabbitMQ / NATS 
 异步处理、削峰填谷、消息重试、顺序性保障
 ### 存储系统
 对象存储（如 MinIO）
