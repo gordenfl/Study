@@ -109,8 +109,8 @@ It was developed by MongoDB Inc. fit for large scale storage and high performanc
 
     | Option     | Command                                                                                 |
     | ------ | ---------------------------------------------------------------------------------- |
-    | 简单聚合管道 | `db.collectionName.aggregate([{ $group: { _id: "$field", total: { $sum: 1 } } }])` |
-    | 复杂聚合   | `db.collectionName.aggregate([{ $match: { field: value } }, { $group: {...} }])`   |
+    | Simple Aggregation | `db.collectionName.aggregate([{ $group: { _id: "$field", total: { $sum: 1 } } }])` |
+    | Multi Aggregation Pipeline   | `db.collectionName.aggregate([{ $match: { field: value } }, { $group: {...} }])`   |
 
 6. Permission
 
