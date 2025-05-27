@@ -6,8 +6,8 @@ This is for the data search, and promote the efficient of search process.
 Like RDS, the index just using B+ tree, and all the data will connected in linked list. if you want to search with some condition, B+ tree can easy to get the result.
 
 How does MongoDB Index working?
-MongoDB does not using B+ Tree for the index. it use B Tree to store all the index data.
-Each query, mongoDB can find target document in index B-Tree. Don't need to go through all collection.
+MongoDB does not using B+ Tree for the index. it use B Tree and other data struct to store all the index data.
+Different kinds of index will have different data struct.
 
 MongoDB Index: it stores KEY and document's ADDRESS where the document stored.
 
@@ -21,12 +21,16 @@ MongoDB Index: it stores KEY and document's ADDRESS where the document stored.
     db.mydb.createIndex({age: -1})
     ```
 
+    The basic data struct it use is B-Tree
+
 2. Composite Index
     this index based on multi-field
 
     ```javascript
     db.mydb.createIndex({username: 1, age: -1}) 
     ```
+
+    The basic data struct it use is B-Tree as well
 
 3. Unique Index
     this attribute in the document must be identify unique
@@ -35,6 +39,8 @@ MongoDB Index: it stores KEY and document's ADDRESS where the document stored.
     db.mydb.createIndex({ email: 1 }, { unique: True })
     ```
 
+    The basic data struct it use is B-Tree as well
+
 4. Hash Index
     Hash process is performed on the field values, which is suitable for uniform distribution and efficient equal value query. later we will learn deep about the Hash Index
 
@@ -42,11 +48,58 @@ MongoDB Index: it stores KEY and document's ADDRESS where the document stored.
         db.mydb.createIndex({address: "hashed"}) 
     ```
 
+    The basic data struct it use is Hash Table
+
 5. GEO Index
     support the geography search, such like near by a point.
 
     ```js
+        db.mydb.createIndex({location: "2d"})
         db.mydb.createIndex({location: "2dsphere"})
+    ```
+
+    2d index use data struct is grid-based B Tree. map the position (x, y) in to a grid panel, suck like B Tree node
+    2dsphere index use GeoJSON coordinate. Make the map struct inside. The search method just using spherical geometry
+
+6. TTL Index (Time-To-Live Index)
+    TTL means time to live. This index only on the some attribute with Time. and if the time is timeout, the document will be delete automatically
+    * Automatic clear timeout data
+    * shrimp the space
+    * always using on the session, log, cache etc.
+
+    ```CPP
+    db.sessions.createIndex(
+        {createdAt: 1}, // the index value will be 1 at the data add to document
+        {expireAfterSeconds: 3600} // the data will be delete while the data has stay in the document over the 3600 second time.
+    )
+    ```
+
+    TTL Index also using B-Tree as the basic data struct.
+
+7. Partial Index
+
+    Easy to understand, this kind of index only build on the document fit for the requirement
+
+    ```CPP
+    db.users.createIndex(
+        {age: 1},
+        {partitalFilterExpression: {age: {$gle:18}}}
+    ) // this Index only build on the data  age large or equal 18 in the document of users 
+    ```
+
+    It always using B-Tree as the basic data struct.
+
+    additionally, this partial index alway used with TTL Index, to keep TTL data will be index not all the data be index
+
+    ```CPP
+    db.sessions.createIndex({
+        {lastActiveAt: 1},
+        {
+            expireAfterSeconds:3600,
+            partialFilterExpression: {isActive: true}
+        }
+    }) // only the data will exist 1 hours of isActive is True sessions
+    // if the isActive does not true, it will not be delete
     ```
 
 ## Use Index and Optimize
