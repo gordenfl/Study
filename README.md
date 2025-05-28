@@ -20,19 +20,18 @@ QUIC , Nagle、拥塞控制
 ### 网络通信
 gRPC、GraphQL
 ### 数据库
-非关系型： MongoDB / Cassandra
+非关系型： Cassandra
 数据库设计范式、分库分表、中间件（Sharding-JDBC、TiDB）
 ### 缓存系统
 缓存一致性：Cache Aside / Write Through / Write Back
 缓存击穿、雪崩、穿透
 ### 消息队列
-RabbitMQ / NATS 
+RabbitMQ / NATS
 异步处理、削峰填谷、消息重试、顺序性保障
 ### 存储系统
 对象存储（如 MinIO）
 KV 存储（RocksDB、LevelDB）
 ### 安全与认证
-TLS / JWT 
 数据脱敏、审计日志
 ## ⚙️ 四、高性能与分布式
 ### 并发与异步编程
