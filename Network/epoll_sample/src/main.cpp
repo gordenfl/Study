@@ -1,4 +1,5 @@
 #include <iostream>
+#include "tcp_server.hpp"
 using std::cout;
 using std::endl;;
 int main() {
@@ -8,7 +9,8 @@ int main() {
     //ChatServer server(port);
 
     // 启动服务器
-    cout<< "Hello World" << endl;
+    TcpServer server("127.0.0.1", 8899);
+    server.start();
 
     return 0;
 }
