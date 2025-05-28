@@ -8,7 +8,7 @@ TcpServer::TcpServer(const string ip, const size_t port) {
 }
 
 void TcpServer::Start() {
-    int socket
+    //int socket
 
 
 }
