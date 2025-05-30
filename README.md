@@ -19,9 +19,6 @@ QUIC , Nagle、拥塞控制
 ## 🏗️ 三、后端核心知识
 ### 网络通信
 gRPC、GraphQL
-### 数据库
-非关系型： Cassandra
-数据库设计范式、分库分表、中间件（Sharding-JDBC、TiDB）
 ### 缓存系统
 缓存一致性：Cache Aside / Write Through / Write Back
 缓存击穿、雪崩、穿透
