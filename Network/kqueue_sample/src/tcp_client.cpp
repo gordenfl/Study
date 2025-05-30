@@ -23,7 +23,7 @@ void receiver_message(int sockfd) {
     while (true) {
         int len = read(sockfd, buf, BUFF_SIZE-1);
         if (len > 0) {
-            buf[len] += '\0';
+            buf[len] = '\0';
             std::cout << "[Message]: " << buf << std::flush;
         } else if (len == 0) {
             std::cout << "Server closed connection" << endl;

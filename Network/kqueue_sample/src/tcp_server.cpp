@@ -102,7 +102,8 @@ void TcpServer::set_nonblocking(int fd) {
 }
 
 void TcpServer::recv_client(int fd) {
-    int len = read(fd, _buffer, BUFF_SIZE);
+    char buffer[BUFF_SIZE];
+    int len = read(fd, buffer, BUFF_SIZE);
     if (len <= 0) {//client close connection
         std::cout << "Client fd: " << fd << "disconnected" << std::endl;
         close(fd);
@@ -112,16 +113,18 @@ void TcpServer::recv_client(int fd) {
         EV_SET(&ev, fd, EVFILT_READ, EV_DELETE, 0, 0, nullptr);
         kevent(_kq, &ev, 1, nullptr, 0, nullptr);
     } else {
-        broadcast(len, fd);
+        std::string msg(buffer, len);
+        broadcast(msg, fd);
     }
 }
 
-void TcpServer::broadcast(int len, int fd) {
-    cout << "SEND: " << _buffer << endl;
+void TcpServer::broadcast(std::string& msg, int fd) {
     for (int client_fd: _clients) { 
         if (client_fd != fd) {
-            write(client_fd, _buffer, len);
+            ssize_t sent = write(client_fd, msg.c_str(), msg.size());
+            if (sent < 0) {
+                perror("send data error");
+            }
         }
     }
-    memset(_buffer, 0, BUFF_SIZE);
 }
