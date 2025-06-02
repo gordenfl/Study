@@ -2,7 +2,7 @@ import socket
 import threading
 import pickle
 
-# 存储所有玩家位置
+# 存储所有玩家位置 这里并没有实现 LockStep
 players = {}
 
 # UDP Server
