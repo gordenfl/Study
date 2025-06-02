@@ -3,7 +3,7 @@ import threading
 import json
 import time
 
-FRAME_INTERVAL = 0.017 # 60 FPS
+FRAME_INTERVAL = 1/60 #0.017 # 60 FPS
 PORT = 12345
 HOST = '0.0.0.0'
 
