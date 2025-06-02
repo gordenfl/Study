@@ -79,6 +79,7 @@ def main():
                 pygame.draw.rect(screen, color, pygame.Rect(p['x'], p['y'], 30, 30))
 
         pygame.display.flip()
+
         clock.tick(FPS)
 
     sock.close()
