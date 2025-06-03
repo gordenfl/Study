@@ -1,0 +1,44 @@
+name: Django CI
+
+on: # when this CI will be trigger
+  push: #one action is push
+    branches: [ "main" ]
+  pull_request: #  another action is pull_request
+    branches: [ "main" ]
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      matrix:
+        python-version: [3.8]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run Tests
+      run: |
+        python manage.py test
+
+    - name: Build and Push Docker Image
+      uses: mr-smithers-excellent/docker-build-push@v6
+          #docer login dckr_pat_d08Rgg754QgnH5fpC6yJAjcqMDg
+      with:
+        image: gordenfl/tttt # come from hte docker hub, what dockerhub repositories you want put
+        tags: v1, latest
+        registry: docker.io   # 如果是推送到docker Hub 的话,这里必须要写docker.io, 否则会有问题
+        dockerfile: Dockerfile.ci
+        username: ${{ secrets.DOCKER_USERNAME }} # 这定义在github里面 本项目的Setting里面有一个环境变量定义的功能
+        password: ${{ secrets.DOCKER_PASSWORD }} # 也是但是不要配置错误

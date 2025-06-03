@@ -1,0 +1,19 @@
+# 5 Job of the whole process
+# 1. create yaml file : .gitlab-ci.yml
+# 2. running tests
+# 3. building image
+# 4. deploy to the server
+# 5. ...
+
+run_tests:
+  image: python:slim
+  before_script:
+    - apt-get update && apt-get install make
+    - echo "apt get all down"
+  script: 
+    - echo "start script..."
+    - python manage.py test
+    - echo "end script!!"
+
+  after_script:
+    - echo "after script"
