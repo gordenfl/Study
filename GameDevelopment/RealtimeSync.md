@@ -1,11 +1,11 @@
 # Game Development Realtime Synchronous
 
-## Frame Synchronous
+## LockStep Synchronous
 
-What is Frame Sync?
+What is LockStep Sync?
 All user input will be collected at the same frame, and broadcast.
 
-Frame Sync, means you need separate the time into different pieces. Each of the piece will receive frame package from all the client and sync data to each client and. If there is some client does not send the frame package, the server logic need to wait for all the client's package then distribute to different client. make all client the same status.
+LockStep Sync, means you need separate the time into different pieces. Each of the piece will receive frame package from all the client and sync data to each client and. If there is some client does not send the frame package, the server logic need to wait for all the client's package then distribute to different client. make all client the same status.
 
 There are some point need to be care:
 
