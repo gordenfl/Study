@@ -1,6 +1,7 @@
 # RDS SQL functions
 
 ## JOIN
+
 Select data from multi tables based on their logic connection (Primary Key and Foreign Key)
 
 1. INNER JOIN
@@ -14,8 +15,6 @@ Select data from multi tables based on their logic connection (Primary Key and F
 
 2. LEFT JOIN
     return left table's record, even if there no record matches in the right table. fill all these right table's column with NULL
-
-    
 
     Student:
 
@@ -44,8 +43,6 @@ Select data from multi tables based on their logic connection (Primary Key and F
     | 1  | Alice | A     |
     | 2  | Bob   | B     |
     | 3  | Carl  | NULL  |
-
-
 
 3. RIGHT JOIN
     return right table's record, even if there no record matches in the right table. fill all these left table's column with NULL.
