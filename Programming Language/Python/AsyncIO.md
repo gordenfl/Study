@@ -13,47 +13,82 @@ Python的这个鸡肋的Thread 功能让人非常难受.所以在3.5 以后开�
 
 
 ## 如何解决问题
-    asyncio, aoihttp
-    这些库在2015年发布以后,提高了很多HTTP效率.他的原理是这样的:
-    Python 代码如果使用了asyncio 的, 他就会在这个线程中分出多个task, 这些task 在这个线程中轮询执行,这样不用切换Python解释器的上下文就大幅提高了代码的执行效率,虽然是单线程但是比过去的多线程要快很多.
+asyncio, aoihttp
+这些库在2015年发布以后,提高了很多HTTP效率.他的原理是这样的:
+Python 代码如果使用了asyncio 的, 他就会在这个线程中分出多个task, 这些task 在这个线程中轮询执行,这样不用切换Python解释器的上下文就大幅提高了代码的执行效率,虽然是单线程但是比过去的多线程要快很多.
 
-    具体的样例:
+具体的样例:
     
-    ```python
-    import asyncio
-    import aiohttp
-    import time
+```python
+import asyncio
+import aiohttp
+import time
 
-    URLS = [
-        "https://httpbin.org/delay/1" for _ in range(10)
+URLS = [
+    "https://httpbin.org/delay/1" for _ in range(10)
+]
+
+async def fetch(session, url):
+    async with session.get(url) as response:
+        text = await response.text()
+        print(f"✅ Done: {url}")
+        return text
+
+async def main():
+    async with aiohttp.ClientSession() as session:  # 用aiohttp 创建多个Clientsession, 可以看做是多个任务
+        tasks = [fetch(session, url) for url in URLS] #每个任务调用fetch
+        await asyncio.gather(*tasks)
+
+if __name__ == "__main__":
+    start = time.time()
+    asyncio.run(main())
+    print(f"⏱ Total time: {time.time() - start:.2f} seconds")
+```
+
+解释一下这段代码的目标是同时fetch URLS 里面10个URL的内容,然后返回.
+如果用Thread来做的话,需要for循环来创建threading.Thread(....) 然后让每个thread去执行,其实也还是串行去执行的,但是线程调度会让上下文切换,导致效率很低. 这里则不需要切换.在一个线程中同时去执行10个任务,10个任务其基本上可以感觉是同时完成.
+
+如果是多个网站需要不同的header 去访问,也可以使用同一个session, 只需要在session.get后面增加headers=headers 你定义一个header 就可以了:
+```python
+headers = {"Authorization": f"Bearer {token}"}
+async with session.get("https://api.example.com/user/info", headers=headers) as resp:
+```
+
+Useful for all the Async logic.
+
+```python
+import asyncio
+import time
+
+# 模拟一个 I/O 操作，比如数据库查询或文件读取
+async def fake_io_task(name, delay):
+    print(f"🚀 Task {name} started, will take {delay}s")
+    await asyncio.sleep(delay)  # 模拟 I/O 等待
+    print(f"✅ Task {name} done after {delay}s")
+    return f"Result from {name}"
+
+async def main():
+    start = time.time()
+
+    # 创建多个异步任务
+    tasks = [
+        fake_io_task("A", 2),
+        fake_io_task("B", 1),
+        fake_io_task("C", 3),
     ]
 
-    async def fetch(session, url):
-        async with session.get(url) as response:
-            text = await response.text()
-            print(f"✅ Done: {url}")
-            return text
+    # 并发运行这些任务
+    results = await asyncio.gather(*tasks)
 
-    async def main():
-        async with aiohttp.ClientSession() as session:  # 用aiohttp 创建多个Clientsession, 可以看做是多个任务
-            tasks = [fetch(session, url) for url in URLS] #每个任务调用fetch
-            await asyncio.gather(*tasks)
+    print("\n🧾 All tasks completed:")
+    for r in results:
+        print(r)
 
-    if __name__ == "__main__":
-        start = time.time()
-        asyncio.run(main())
-        print(f"⏱ Total time: {time.time() - start:.2f} seconds")
-    ```
+    print(f"\n⏱ Total time: {time.time() - start:.2f} seconds")
 
-    解释一下这段代码的目标是同时fetch URLS 里面10个URL的内容,然后返回.
-    如果用Thread来做的话,需要for循环来创建threading.Thread(....) 然后让每个thread去执行,其实也还是串行去执行的,但是线程调度会让上下文切换,导致效率很低. 这里则不需要切换.在一个线程中同时去执行10个任务,10个任务其基本上可以感觉是同时完成.
+# 启动异步事件循环
+asyncio.run(main())
 
-    如果是多个网站需要不同的header 去访问,也可以使用同一个session, 只需要在session.get后面增加headers=headers 你定义一个header 就可以了:
-    ```python
-    headers = {"Authorization": f"Bearer {token}"}
-    async with session.get("https://api.example.com/user/info", headers=headers) as resp:
+```
 
-    ```
-
-
-    Useful for all the Async logic.
+这个例子是一个只用asyncio但是不用aiohttp的例子, 很好理解.
