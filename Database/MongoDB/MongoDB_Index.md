@@ -58,8 +58,8 @@ MongoDB Index: it stores KEY and document's ADDRESS where the document stored.
         db.mydb.createIndex({location: "2dsphere"})
     ```
 
-    2d index use data struct is grid-based B Tree. map the position (x, y) in to a grid panel, suck like B Tree node
-    2dsphere index use GeoJSON coordinate. Make the map struct inside. The search method just using spherical geometry
+    2d index use data struct is grid-based B+ Tree. map the position (x, y) in to a grid panel, suck like B+ Tree node
+    2d sphere index use GeoJSON coordinate. Make the map struct inside. The search method just using spherical geometry
 
 6. TTL Index (Time-To-Live Index)
     TTL means time to live. This index only on the some attribute with Time. and if the time is timeout, the document will be delete automatically
@@ -134,7 +134,7 @@ MongoDB Index: it stores KEY and document's ADDRESS where the document stored.
 
 ## Notice about Index
 
-1. if you have a lot of index, when you add or delete or udpate data, it will bring a lot of cost.
+1. if you have a lot of index, when you add or delete or update data, it will bring a lot of cost.
 2. multi-index order: such as {username: 1, age: -1} or {age: -1, username: 1, }
 3. Big index will occupy more memory, it will bring negative effect.
 4. Avoid "index failed": the query conditions do not match the index design. The index will not be used. bring low efficient.
@@ -150,7 +150,6 @@ Hash Index is an single field index. This index will hash this value of this fil
 | ❌ No Range Query  | Can not using `$gt`、`$lt` etc.       |
 | 🚀 Promote Average Overload | reduce one point overload                |
 | 📏 Only one Field   | Only can build on one field               |
-
 
 ## Under layer
 
