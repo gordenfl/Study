@@ -50,3 +50,30 @@ pip install aioquic
 ```
 
 this quick lib is bases on asyncio.
+
+## Compare with TCP:
+
+| Feature     | TCP            | QUIC          |
+| ------ | -------------- | ------------- |
+| Protocol Type   | Based on Connection reliable protocol  | Reliable Protocol based on UDP |
+| Multiplexing   | Support HTTP/2 layer   | Multiplexing support        |
+| Connection Time-Consuming | at least 1-RTT + TLS | faster 0-RTT can transfer data |
+| Encrypt     | Based on TLS layer       | Build in TLS 1.3    |
+| Connection Migration  | not support            | support |
+| Deploy flexibility  | May blocked by firewall | easy to go through firewall     |
+
+## Quick Package Construction
+
+Two part of each package:
+
+```sh
+| UDP Header | QUIC Header | Encrypted Payload (Frame) |
+```
+
+1. QUICK Header: include version, connection ID, package number etc.
+2. Frame: data frame, control frame, ACK frame etc. you can extend it.
+3. UDP Header is basic layer package info, it include the source port, destination port, length, checksum.
+
+一个QUICK 连接的 CID是与这个设备的地址,连接状态,加密身份验证信息,包序列绑定的.是复发在另个设备上同时当一个设备连上服务器的.
+只有这个设备当前的网络切换才可以,可以通过0-RTT来重连上去.
+
