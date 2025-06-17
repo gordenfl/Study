@@ -14,14 +14,13 @@ Go / Rust / C#  熟练掌握至少一门语言的语法、标准库、并发模�
 系统调用、上下文切换、调度算法
 零拷贝、缓存一致性、Page Cache
 ### 计算机网络
-QUIC , Nagle、拥塞控制
+Nagle、拥塞控制
 负载均衡、Keep-Alive、长连接
 ## 🏗️ 三、后端核心知识
 ### 网络通信
 gRPC、GraphQL
 ### 缓存系统
 缓存一致性：Cache Aside / Write Through / Write Back
-缓存击穿、雪崩、穿透
 ### 消息队列
 RabbitMQ / NATS
 异步处理、削峰填谷、消息重试、顺序性保障
@@ -38,7 +37,7 @@ CAS
 连接管理、线程模型、负载均衡
 限流（令牌桶、漏桶）、熔断、降级
 ### 分布式系统基础
-CAP 定理、Paxos / Raft / Gossip 协议
+Paxos / Raft / Gossip 协议
 分布式事务（2PC、SAGA、TCC）
 一致性哈希 / Etcd、服务注册与发现
 ### 分布式架构实践
