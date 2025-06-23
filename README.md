@@ -1,30 +1,42 @@
+# Server/Back-end engineer knowledge checklist
+
+---
+
 ## 🔧 1. Programming Languages & Toolchain
 
 ### Essential Languages
 
-* **Go / Rust / C#** – Achieve proficiency in at least one: syntax, standard library, concurrency models, and performance tuning.
+* **Go**, **Rust**, **Java**, **Python**, **C#**, **Node.js** (choose based on stack): Master at least one language’s syntax, standard library, concurrency model, and performance tuning.
 
 ### Toolchain
 
-* **Build tools** (e.g., Go Modules, Gradle)
-* **Debugging** (delve, pprof, perf)
-* **Static analysis / Linting tools**
+* **Build tools** (e.g., Make, Go Modules, Gradle, CMake)
+* **Debuggers** (gdb, delve), **profilers** (pprof, perf)
+* **Static analysis / Lint tools**
 * **Unit testing frameworks / Mocking libraries**
 
 ---
 
 ## 🧠 2. Computer Science Fundamentals
 
+### Data Structures & Algorithms
+
+* Common structures: arrays, linked lists, stacks, queues, hash tables, skip lists, heaps, trees, graphs
+* Algorithms: sorting, searching, dynamic programming, graph algorithms, greedy strategies
+* Practical systems: LRU cache, inverted indices, Top‑K algorithms, Bloom filters
+
 ### Operating Systems
 
-* **Memory management**
-* **System calls, context switching, scheduling algorithms**
-* **Zero-copy, cache coherence, page cache**
+* Processes vs threads, memory management, file systems, I/O models (epoll/kqueue)
+* System calls, context switching, deadlocks, scheduling algorithms
+* mmap, zero-copy techniques, cache coherence, page cache
 
-### Computer Networking
+### Networking
 
-* **Nagle’s algorithm**, **congestion control mechanisms**
-* **Load balancing**, **HTTP Keep‑Alive**, **persistent connections**
+* Protocols: TCP / UDP / QUIC / HTTP/HTTPS / WebSocket
+* TCP handshake & teardown, Nagle’s algorithm, congestion control
+* DNS, CDN, load balancing, Keep‑Alive, long-lived connections
+* Socket programming, connection pooling, protocol serialization (e.g., Protobuf)
 
 ---
 
@@ -32,68 +44,80 @@
 
 ### Network Communication
 
-* **gRPC**, **GraphQL**
+* RESTful API design, gRPC, WebSocket, GraphQL
+* Multi-protocol support (TCP/UDP/HTTP), cross-language encoding (e.g., Protobuf)
+
+### Databases
+
+* Relational: MySQL, PostgreSQL (transactions, indexing, query tuning, lock mechanisms)
+* NoSQL: Redis, MongoDB, Cassandra
+* Schema design, normalization, horizontal scaling (sharding), middleware (e.g., Sharding‑JDBC, TiDB)
 
 ### Caching Systems
 
-* Cache consistency patterns: **Cache-Aside**, **Write-Through**, **Write-Back**
+* Advanced Redis: ZSet, Bitmap, HyperLogLog, Lua scripting, pipelining
+* Cache coherence patterns: Cache-Aside, Write-Through, Write-Back
+* Cache issues: stampede, avalanche, penetration
 
 ### Message Queues
 
-* **RabbitMQ**, **NATS**
-* Asynchronous processing, **burst smoothing**, retry strategies, **ordering guarantees**
+* Kafka, RabbitMQ, NATS, Redis Streams
+* Asynchronous processing, burst handling, retry policies, ordering guarantees
 
 ### Storage Systems
 
-* **Object storage** (e.g., MinIO)
-* **Key-Value storage** (e.g., RocksDB, LevelDB)
+* Object Storage: MinIO, Amazon S3
+* File systems, block storage, embedded KV stores: RocksDB, LevelDB
 
 ### Security & Authentication
 
-* **Data masking**, **audit logging**
+* HTTPS/TLS, JWT, OAuth2, encryption/decryption
+* Data masking, role-based access control (RBAC), audit/audit logs
 
 ---
 
 ## ⚙️ 4. High Performance & Distributed Systems
 
-### Concurrency & Asynchronous Programming
+### Concurrency & Async Programming
 
-* **Go’s goroutine model**, Rust’s **async/await**
-* **Compare-and-swap (CAS)**
+* Go’s goroutines, Java thread pools, Rust’s async/await
+* Locking primitives: mutexes, CAS (compare-and-swap), spinlocks, read-write locks, semaphores
 
-### High-Concurrency Design
+### High-Concurrency Architecture
 
-* Connection management, thread models, load balancing
-* **Rate limiting** (token bucket, leaky bucket), **circuit breaking**, **graceful degradation**
+* Connection/thread management, load distribution
+* Rate limiting (token bucket, leaky bucket), circuit breakers, graceful degradation
 
 ### Distributed Systems Fundamentals
 
-* Consensus protocols: **Paxos**, **Raft**, **Gossip protocols**
-* Distributed transactions: **2‑Phase Commit (2PC)**, **SAGA**, **TCC**
-* **Consistent hashing**, service registration & discovery (e.g., **Etcd**)
+* CAP theorem, consensus protocols: Paxos, Raft, Gossip
+* Distributed transactions: Two-Phase Commit (2PC), SAGA, TCC
+* Consistent hashing, service discovery: Zookeeper, Etcd
 
-### Distributed Architecture Practices
+### Distributed Architecture Patterns
 
-* **Service decomposition**, **API Gateway**, **Sidecar architecture** (e.g., Istio)
-* Load balancers: **Nginx**, **Envoy**, **HAProxy**
+* Monolith vs microservices
+* API Gateway, sidecar pattern (e.g., Istio)
+* Layer 4/7 load balancers: Nginx, Envoy, HAProxy
 
 ---
 
 ## 📊 5. Monitoring & Operations
 
-### Logging Systems
+### Logging
 
-* Log collection: **ELK**, **Loki**
-* Structured logging, trace IDs
+* Log aggregation: ELK stack, Loki
+* Structured logging, JSON format, trace IDs
 
-### Performance Monitoring
+### Metrics & Observability
 
-* **Prometheus** + **Grafana**, **OpenTelemetry**, **Jaeger**
-* Metrics: QPS, response time, GC stats, memory usage
+* Prometheus + Grafana, OpenTelemetry, Jaeger (distributed tracing)
+* Core metrics: QPS, latency, GC, memory usage
 
-### Operations Automation
+### DevOps & Automation
 
-* **Docker Compose**, **ArgoCD**
+* Container platforms: Docker, Docker Compose, Kubernetes (K8s)
+* CI/CD tools: Jenkins, GitHub Actions, ArgoCD
 
 ---
 
@@ -101,37 +125,40 @@
 
 ### Version Control
 
-* Git workflows (**GitFlow**, trunk-based development)
-* Branching strategies, Tag/Release management
+* Git workflows: GitFlow, trunk-based development
+* Branch/tags/releases management
 
-### Containerization & Deployment
+### Containers & Deployment
 
-* Image building, configuration management, DevOps pipelines with CI/CD
+* Image building, config management, environment separation
+* CI/CD pipelines, test automation, deployment automation
 
-### Observability & Resilience
+### Resilience & Observability
 
-* Health checks, circuit breakers, slow‑request profiling, alerting rules
+* Health probes, circuit breaker patterns, slow-request profiling, alerting/monitoring rules
 
 ---
 
 ## 🧩 7. Domain Modeling & Design Patterns
 
-### Architectural Patterns
+### Architectural Styles
 
-* **CQRS**, **Event Sourcing**
-* **Clean Architecture**, **Hexagonal (Ports & Adapters) Architecture**
+* DDD (Domain-Driven Design)
+* CQRS, Event Sourcing
+* Clean Architecture, Hexagonal (Ports & Adapters) Architecture
 
 ### Coding Best Practices
 
-* **SOLID principles**
-* Middleware abstractions, modular design, interface-driven development
+* SOLID principles, classic design patterns (Factory, Strategy, Observer, etc.)
+* Middleware abstraction, modular design, interface-driven code
 
 ---
 
 ## 🎮 (Optional) Game Server Development Addendum
 
-* **Space partitioning** (Grid, Quadtree)
-* Real-time sync (state sync / command sync)
-* **Frame synchronization**, **tick-rate** design
-* Data-driven design
-* **Frame processor** architecture
+* AOI (Area of Interest) systems, spatial partitioning (e.g., Grid, Quadtree)
+* Real-time sync models: state-sync, command-sync
+* UDP networking, frame sync, tick-rate management
+* Scripting support (Lua, Python), data-driven architecture
+* Scene management, finite state machines, frame processor design
+
