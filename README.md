@@ -1,76 +1,137 @@
-# 服务器端工程师所需要掌握的知识
-这是一份全面的 服务器端程序员（后端工程师） 应该掌握的知识体系，涵盖从基础到高级的各个维度。适用于游戏服务器、Web 后端、高并发系统等方向。
-## 🔧 一、编程语言 & 工具链
-### 必备语言
-Go / Rust / C#  熟练掌握至少一门语言的语法、标准库、并发模型、性能优化
-### 工具链
-构建工具（如 Go Modules、Gradle）
-调试工具（delve, pprof, perf）
-静态分析 / Lint 工具
-单元测试框架 / Mock 工具
-## 🧠 二、计算机基础
-### 操作系统
-内存管理
-系统调用、上下文切换、调度算法
-零拷贝、缓存一致性、Page Cache
-### 计算机网络
-Nagle、拥塞控制
-负载均衡、Keep-Alive、长连接
-## 🏗️ 三、后端核心知识
-### 网络通信
-gRPC、GraphQL
-### 缓存系统
-缓存一致性：Cache Aside / Write Through / Write Back
-### 消息队列
-RabbitMQ / NATS
-异步处理、削峰填谷、消息重试、顺序性保障
-### 存储系统
-对象存储（如 MinIO）
-KV 存储（RocksDB、LevelDB）
-### 安全与认证
-数据脱敏、审计日志
-## ⚙️ 四、高性能与分布式
-### 并发与异步编程
-Go 协程模型、Rust 的 async/await
-CAS
-### 高并发设计
-连接管理、线程模型、负载均衡
-限流（令牌桶、漏桶）、熔断、降级
-### 分布式系统基础
-Paxos / Raft / Gossip 协议
-分布式事务（2PC、SAGA、TCC）
-一致性哈希 / Etcd、服务注册与发现
-### 分布式架构实践
-服务拆分、网关（API Gateway）、Sidecar 模式（如 Istio）
-负载均衡器：Nginx / Envoy / HAProxy
-## 📊 五、监控与运维
-### 日志系统
-日志收集：ELK、Loki
-日志格式：结构化、追踪 ID
-### 性能监控
-Prometheus + Grafana、OpenTelemetry、Jaeger（链路追踪）
-Metrics（QPS、RT、GC、内存占用）
-### 运维自动化
-Compose、ArgoCD
-## 📦 六、部署与工程实践
-### 版本控制
-Git 流程（GitFlow、 trunk-based）
-多分支开发、Tag/Release 管理
-### 容器化与部署
-镜像构建、配置管理, DevOps 流程与自动化测试/部署
-### 可观测性设计
-健康检查、熔断机制、慢请求跟踪、报警规则
-## 🧩 七、业务建模与设计模式
-### 架构模式
-CQRS / Event Sourcing
-Clean Architecture、Hexagonal Architecture
-### 编码实践
-SOLID 原则
-中间件抽象、模块化设计、接口驱动
-## 🎮（可选）游戏服务器开发特别补充
-空间划分（Grid、Quadtree）
-实时同步（状态同步 / 命令同步）
-帧同步、tick-rate 设计
-数据驱动设计
-帧处理器设计
+## 🔧 1. Programming Languages & Toolchain
 
+### Essential Languages
+
+* **Go / Rust / C#** – Achieve proficiency in at least one: syntax, standard library, concurrency models, and performance tuning.
+
+### Toolchain
+
+* **Build tools** (e.g., Go Modules, Gradle)
+* **Debugging** (delve, pprof, perf)
+* **Static analysis / Linting tools**
+* **Unit testing frameworks / Mocking libraries**
+
+---
+
+## 🧠 2. Computer Science Fundamentals
+
+### Operating Systems
+
+* **Memory management**
+* **System calls, context switching, scheduling algorithms**
+* **Zero-copy, cache coherence, page cache**
+
+### Computer Networking
+
+* **Nagle’s algorithm**, **congestion control mechanisms**
+* **Load balancing**, **HTTP Keep‑Alive**, **persistent connections**
+
+---
+
+## 🏗️ 3. Backend Core Concepts
+
+### Network Communication
+
+* **gRPC**, **GraphQL**
+
+### Caching Systems
+
+* Cache consistency patterns: **Cache-Aside**, **Write-Through**, **Write-Back**
+
+### Message Queues
+
+* **RabbitMQ**, **NATS**
+* Asynchronous processing, **burst smoothing**, retry strategies, **ordering guarantees**
+
+### Storage Systems
+
+* **Object storage** (e.g., MinIO)
+* **Key-Value storage** (e.g., RocksDB, LevelDB)
+
+### Security & Authentication
+
+* **Data masking**, **audit logging**
+
+---
+
+## ⚙️ 4. High Performance & Distributed Systems
+
+### Concurrency & Asynchronous Programming
+
+* **Go’s goroutine model**, Rust’s **async/await**
+* **Compare-and-swap (CAS)**
+
+### High-Concurrency Design
+
+* Connection management, thread models, load balancing
+* **Rate limiting** (token bucket, leaky bucket), **circuit breaking**, **graceful degradation**
+
+### Distributed Systems Fundamentals
+
+* Consensus protocols: **Paxos**, **Raft**, **Gossip protocols**
+* Distributed transactions: **2‑Phase Commit (2PC)**, **SAGA**, **TCC**
+* **Consistent hashing**, service registration & discovery (e.g., **Etcd**)
+
+### Distributed Architecture Practices
+
+* **Service decomposition**, **API Gateway**, **Sidecar architecture** (e.g., Istio)
+* Load balancers: **Nginx**, **Envoy**, **HAProxy**
+
+---
+
+## 📊 5. Monitoring & Operations
+
+### Logging Systems
+
+* Log collection: **ELK**, **Loki**
+* Structured logging, trace IDs
+
+### Performance Monitoring
+
+* **Prometheus** + **Grafana**, **OpenTelemetry**, **Jaeger**
+* Metrics: QPS, response time, GC stats, memory usage
+
+### Operations Automation
+
+* **Docker Compose**, **ArgoCD**
+
+---
+
+## 📦 6. Deployment & Engineering Practices
+
+### Version Control
+
+* Git workflows (**GitFlow**, trunk-based development)
+* Branching strategies, Tag/Release management
+
+### Containerization & Deployment
+
+* Image building, configuration management, DevOps pipelines with CI/CD
+
+### Observability & Resilience
+
+* Health checks, circuit breakers, slow‑request profiling, alerting rules
+
+---
+
+## 🧩 7. Domain Modeling & Design Patterns
+
+### Architectural Patterns
+
+* **CQRS**, **Event Sourcing**
+* **Clean Architecture**, **Hexagonal (Ports & Adapters) Architecture**
+
+### Coding Best Practices
+
+* **SOLID principles**
+* Middleware abstractions, modular design, interface-driven development
+
+---
+
+## 🎮 (Optional) Game Server Development Addendum
+
+* **Space partitioning** (Grid, Quadtree)
+* Real-time sync (state sync / command sync)
+* **Frame synchronization**, **tick-rate** design
+* Data-driven design
+* **Frame processor** architecture
