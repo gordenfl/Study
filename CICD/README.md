@@ -24,7 +24,7 @@ My practice of CI/CD.
 1. Content of That Yaml
     basic it will have four parts of that file:
     * name: name of the project
-    * on: what actio    n it can be on this project (push, pull_request etc.)
+    * on: what action it can be on this project (push, pull_request etc.)
     * jobs: this is the most complicated part of this file, just define different step of the action while will be done on the process
     * jobs/build : here you can define different actions to doing something you want. and it depend on what action name you defined, such as "- uses: actions/checkout@v4", that means you need to execute the logic define in the action's checkout at the ver 4. jobs/build have different other attribute.
     * jobs/build/runs-on: that means that what's the main docker image your project will running on.
