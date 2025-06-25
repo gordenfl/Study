@@ -1,6 +1,19 @@
 # 现代C++ 的基本知识
 
-## <strong style="color: red;"> std::bind </strong>
+
+| 版本     | 发布年    | 特点关键词                         |
+| ------ | ------ | ----------------------------- |
+| C++98  | 1998   | 类、模板、STL                      |
+| C++03  | 2003   | bug修复                         |
+| C++11  | 2011   | auto, lambda, 并发 , std::bind             |
+| C++14  | 2014   | 泛型lambda, make\_unique        |
+| C++17  | 2017   | optional, variant, filesystem |
+| C++20  | 2020   | concepts, ranges, 协程          |
+| C++23  | 2023   | std::expected, print, 模式匹配雏形  |
+| C++26+ | 预计2026 | 静态反射、模式匹配增强、UI支持              |
+
+
+## <strong style="color: red;"> std::bind  in C++11 </strong>
 
 std::bind 在这里的会返回一个函数指针，具体有几个参数是可以由后面的 _1, _2, _3 ..., 代表第一个第二个第三个这样来的。
 
@@ -62,7 +75,7 @@ int main() {//整个函数将输出的值是 10 而不是二十
 
 所以不需要 callback 连的逻辑往外面传值。
 
-## <strong style="color:red;"> std::share_ptr<str>   </strong>
+## <strong style="color:red;"> std::share_ptr C++11 中出现的 <str>   </strong>
 
 智能指针，你传递一个类进去以后，他会给你创建这个类的实例并且返回指向这个类的智能指针，你不需要去管这个类的对象什么时候析构。
 
@@ -73,7 +86,7 @@ connection->send("AAAAAA");
 
 不需要后面去delete 这个指针。他有引用技术和自动回收功能。就跟用 Python 的变量一样了
 
-## <strong style="color:red;">typedef std::function<void()> EventCallback;</strong>
+## <strong style="color:red;">typedef std::function<void()> EventCallback; C++11 </strong>
 
 定义一个函数指针，这个函数指针的函数类型是 void XXX()  类似这样的函数
 
@@ -88,7 +101,7 @@ int main() {
 }
 ```
 
-## <strong style="color:red;">  class Channel : noncopyable {};</strong>
+## <strong style="color:red;">  class Channel : noncopyable {}; C++11 前后都有</strong>
 
 这个类的继承在现代 C++中很常见，noncopyable 这个类是 boost 库提供的，这个类的继承是不允许此类定义拷贝构造函数和拷贝赋值。
 如果不想使用 boost 的话自己也可以很容易实现：
@@ -109,7 +122,7 @@ protected:
 
 继承这个类的话既不能被拷贝也不能被赋值。
 
-## <strong style="color:red;">  std::move(void*);</strong>
+## <strong style="color:red;">  std::move(void*); C++11 </strong>
 
 这个函数的参数可以是任何东西的指针，他的作用就是将 cb 直接移动到对应的位置上去比如：
 
@@ -122,7 +135,7 @@ void setWriteCallback(EventCallback cb) {//EventCallback 类型是一个智能�
 std::function<void()> + std::move： 支持 lambda，支持成员函数，有可能会拷贝，性能方面设计动态非配， 灵活性高
 void (&cb)() （函数指针引用）：不支持 Lambda，不支持类的成员函数，无拷贝，性能最高，灵活性差
 
-## <strong style="color:red;"> explicit 关键字在 C++ 构造函数中的应用</strong>
+## <strong style="color:red;"> explicit 关键字在 C++ 构造函数中的应用 C++98 就有</strong>
 
 这个关键字就是属于，避免在 C++类中，有且只有一个参数的构造函数被隐式转换
 
@@ -151,7 +164,7 @@ std::unique_ptr<A> p1 = std::make_unique<A>();
 std::unique_ptr<A> p2 = std::move(p1);  // ✅ p1 的所有权转移到 p2， 当 p1 的所有权转移到 p2 之后，p1 变为空，不能再访问原对象。
 ```
 
-##  <strong style="color:red;"> std::deque</strong>
+##  <strong style="color:red;"> std::deque C++11 引入的</strong>
 
 类似 std::vector, 它可以从头不和尾部增加值，和 pop 值， python 中 list
 
@@ -166,7 +179,7 @@ std::deque<int> dq;
     dq.pop_back();    // 删除尾部
 ```
 
-## <strong style="color:red;"> typedef std::function<void ()> Task </strong>
+## <strong style="color:red;"> typedef std::function<void ()> Task C++11 开始推荐</strong>
 
 typedef void(void) Task
 本来没看懂这是什么意思，表达定义个函数 参数为空，返回值为空的函数指针，名字叫 Task
