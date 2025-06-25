@@ -5,10 +5,10 @@
 | ------ | ------ | ----------------------------- |
 | C++98  | 1998   | 类、模板、STL                      |
 | C++03  | 2003   | bug修复                         |
-| C++11  | 2011   | auto, lambda, 并发 , std::bind             |
-| C++14  | 2014   | 泛型lambda, make\_unique        |
+| C++11  | 2011   | auto, lambda, 并发 , std::bind ,std::share_ptr std::make_shared, std::weak_ptr, std::function<void()>, noncopyable, std::move            |
+| C++14  | 2014   | 泛型lambda(Generics lambda) make\_unique , ,       |
 | C++17  | 2017   | optional, variant, filesystem |
-| C++20  | 2020   | concepts, ranges, 协程          |
+| C++20  | 2020   | concepts, ranges, 协程(coroutine)          |
 | C++23  | 2023   | std::expected, print, 模式匹配雏形  |
 | C++26+ | 预计2026 | 静态反射、模式匹配增强、UI支持              |
 
@@ -179,7 +179,7 @@ std::deque<int> dq;
     dq.pop_back();    // 删除尾部
 ```
 
-## <strong style="color:red;"> typedef std::function<void ()> Task C++11 开始推荐</strong>
+## <strong style="color:red;"> using Task std::function<void ()>; C++11 开始推荐</strong>
 
 typedef void(void) Task
 本来没看懂这是什么意思，表达定义个函数 参数为空，返回值为空的函数指针，名字叫 Task
@@ -195,7 +195,7 @@ void hello() {
 
 这样你就可以调用 a() 了； 两者是不一样的。
 
-## using 在新版C++中的含义
+## using 在新版C++11中的含义
 
 ```CPP
 //typedef std::function<void(int a, int b)> ADD; //这句和下面一句话是等同的
@@ -238,7 +238,7 @@ std::shared_ptr<A> a = A::create();
 a->func1(); //这里就可以获得自己被引用了几次，为了防备在类的内部被自己内部的逻辑 delete 掉
 ```
 
-## size_t vs ssize_t
+## size_t vs ssize_t 不是C++但是
 
 size_t 是一个无符号的整数，unsigned int 4个字节
 ssize_t 是一个有符号的整数， 就是一个 int 4 个字节
