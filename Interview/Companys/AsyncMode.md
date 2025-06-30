@@ -14,7 +14,6 @@ This is a table about all Async Modes during all product we can use:
 | Monitor              | 结构化同步/条件等待      | 方法内锁 + 条件变量       |
 | Thread-local Storage | 避免共享冲突、保持线程独立状态 | 各线程独立存储           |
 
-
 ## Producer-Consumer 模型
 
 这里面管理一个任务队列,任何生产者产生任务都放入缓冲队列, 每个消费者线程都会从队列中获取一个任务并且处理, 配合信号量Semaphore 来做限制, 需要在缓冲队列中取数据的时候加上线程安全.就是说让这个任务队列里面有一个线程安全的Mutex, 保证他们在取数据的时候是一个一个取的,这样就不会产生两个Consumer获取到同一个数据.
