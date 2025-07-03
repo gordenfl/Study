@@ -140,8 +140,8 @@
     D中只包含一个A的子对象,所以在调用A的函数的时候就不会有问题了.
 
 4 . Heap vs stack
-    * stack: 存放临时变量,函数参数,自动会分配和回收, 速度快, 空间有限通常就几 MB.
-    * heap: 用于动态分配内存,通过new/malloc, 灵活但需要手动释放,内存泄漏会有大问题, 速度相对较慢
+    Stack: 存放临时变量,函数参数,自动会分配和回收, 速度快, 空间有限通常就几 MB.
+    Heap: 用于动态分配内存,通过new/malloc, 灵活但需要手动释放,内存泄漏会有大问题, 速度相对较慢
 
 ## Operation System
 
@@ -159,8 +159,7 @@
     | **Mutex**     | ✅ 持有者独占 | ❌ 不可，必须由锁持有者解锁  | 严格互斥，正确清理资源    |
     | **Semaphore** | ❌ 没有所有权 | ✅ 可以被非操作线程释放    | 用于信号通知、生产者/消费者 |
 
-
-2. Deadlock, Race Conditions
+2. Deadlock, Race Conditions, Lock Contention
     * Deadlock: 死锁, 发生在多线程中,一个线程锁住A等待B, 另外一个线程锁住B等待A, 这样两个现成就永久阻塞了. 他有四个必要条件:
         * 互斥(mutex): 一个资源被一个线程独占
         * 占有并且等待(hold and wait): 线程持有资源时继续请求其他资源
@@ -176,7 +175,64 @@
     * Race Conditions: 凡是访问共享数据都需要原子操作, 加锁,临界区尽可能小,避免更多串行执行.如果有复杂逻辑最好使用消息队列或者actor模式降级并发错误率.
     关于异步处理的设计模式在这里有详细说明 [异步处理的模式](../AsyncMode.md)
 
-3. Thread synchronization
+    * Lock Contention 竞争锁
+    当多个线程频繁争用同一个锁的时候,会导致Lock Contention, 这样不会死掉但是性能会降低
+
+    ```CPP
+    std::mutex mtx;
+
+    void thread_function() {
+        for (int i = 0; i < 1000; ++i) {
+            std::lock_guard<std::mutex> lock(mtx);
+            // 执行任务
+        }
+    }
+    ```
+
+    前面说的内容已经包含了大部分关于线程同步的问题,死锁, Race Conditions, SpinLock, Semaphore, Mutex 等等,这里要说的是: 活锁 和优先级反转
+
+    * 活锁: 就是两个线程频繁的去加锁同一个东西,就像如下的代码:
+
+    ```CPP
+    std::mutex mutex1, mutex2;
+
+    void thread1() {
+        while (true) {
+            if (mutex1.try_lock()) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                if (mutex2.try_lock()) {
+                    // 执行任务
+                    mutex2.unlock();
+                    mutex1.unlock();
+                    break;
+                } else {
+                    mutex1.unlock();
+                }
+            }
+        }
+    }
+
+    void thread2() {
+        while (true) {
+            if (mutex2.try_lock()) {
+                std::this_thread::sleep_for(std::chrono::milliseconds(1));
+                if (mutex1.try_lock()) {
+                    // 执行任务
+                    mutex1.unlock();
+                    mutex2.unlock();
+                    break;
+                } else {
+                    mutex2.unlock();
+                }
+            }
+        }
+    }
+    ```
+
+    这两个线程很容易出现互相等待的状态, 并不是要死掉,而是非常艰难.这种逻辑最好不好写.这就是活锁.
+
+    * 优先级反转
+
 
 操作系统的,多进程,多线程, 数据库, TCP/IP, UDP, HTTP, SSL/TLS, 
 
